@@ -6,8 +6,8 @@ const { setUserData } = require('../service/Authentication');
  * @param {*} request 
  * @param {*} response 
  */
-async function getUserData(request, response) {
-
+async function getUserData(request, response)
+{
     let data = await userColletion.find();
     response.json({success : true, data : data});
 }
