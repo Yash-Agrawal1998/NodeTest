@@ -13,8 +13,10 @@ function setUserData(userData)
     let jwtToken = jwt.sign(
         {
             _id : userData._id,
-            name : userData.first_name,
-            email : userData.email_id
+            first_name : userData.first_name,
+            last_name : userData.last_name,
+            email_id : userData.email_id,
+            job_title : userData.job_title
         },
         privateKey,
         {

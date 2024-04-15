@@ -1,5 +1,6 @@
 const userColletion = require('../models/user');
 const { setUserData } = require('../service/Authentication');
+const Di = require('../service/Di');
 
 /**
  * function to get the userData
@@ -8,8 +9,9 @@ const { setUserData } = require('../service/Authentication');
  */
 async function getUserData(request, response)
 {
-    let data = await userColletion.find();
-    response.json({success : true, data : data});
+    let di = new Di();
+    let userData = di.getData();
+    response.json({success : true, data : userData});
 }
 
 /**

@@ -1,4 +1,5 @@
 const {verifyToken} = require('../service/Authentication');
+const Di = require('../service/Di');
 
 async function validateLoginData(request, response, next) {
     if (!request.body.email ||!request.body.password) {
@@ -18,6 +19,15 @@ async function verifyUser(request, response, next)
         let token = headerData.authorization;
         let validationResponse = verifyToken(token);
         if (validationResponse.success) {
+            let userData = validationResponse.message;
+            let di = new Di();
+            di.setData({
+                _id : userData._id,
+                first_name : userData.first_name,
+                last_name : userData.last_name,
+                email_id : userData.email_id,
+                job_title : userData.job_title,
+            })
             next();
         } else {
             response.json({
