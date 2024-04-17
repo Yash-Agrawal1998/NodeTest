@@ -1,8 +1,7 @@
 import mailer from 'nodemailer';
 import {readFileData} from '../File/FileOperation.mjs';
-import path from 'path';
 import handlebars from 'handlebars';
-
+import { emailConfiguration,  senderEmail } from '../../../config/config.mjs';
 
 const requiredMailDataField = [
     'subject',
@@ -17,22 +16,14 @@ export function sendemail(data = {})
     if (formattedMailData.success) {
         let mailData = formattedMailData.data;
         // Create a transporter object using the default SMTP transport
-        const transporter = mailer.createTransport({
-            host: "smtp.gmail.com",
-            port: 587,
-            secure: false, // Use `true` for port 465, `false` for all other ports
-            auth: {
-              user: "yashagrawal@cedcommerce.com",
-              pass: "lfdwkaxngwxaobeh",
-            },
-          });
+        const transporter = mailer.createTransport(emailConfiguration);
     
         // Set up email data
         let emailTemplateData = readFileData(mailData.template_path);
         const emailTemplate = handlebars.compile(emailTemplateData);
         const emailContent = emailTemplate(mailData.extraData);
         const mailOptions = {
-            from: 'yashagrawal@cedcommerce.com', // Sender address
+            from: senderEmail, // Sender address
             to: mailData.user_email, // List of recipients
             subject: mailData.user_email, // Subject line
             html : emailContent,

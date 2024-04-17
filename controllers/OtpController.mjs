@@ -3,7 +3,11 @@ import { sendemail } from '../Components/Email/Email.mjs';
 import { getCurrentYear, getCurrentDate, getCurrentMonth } from '../Components/Date/Date.mjs';
 import path from 'path';
 
-
+/**
+ * function to send the otp email
+ * @param {*} request 
+ * @param {*} response 
+ */
 export async function sendOtp(request, response)
 {
     let requestData = request.body;
@@ -49,9 +53,38 @@ export async function sendOtp(request, response)
     }
 }
 
+/**
+ * function to verify the otp
+ * @param {*} request 
+ * @param {*} response 
+ */
 export async function verifyOtp(request, response)
 {
-
+    let requestData = request.body;
+    if (requestData.otp) {
+        let otp = Number(requestData.otp);
+        let otpData = await otpCollection.findOne(
+            {
+                otp : otp
+            }
+        );
+        if (otpData) {
+            response.json({
+                'success' : true,
+                'message' : 'Email verification done successfully!'
+            });
+        } else {
+            response.json({
+                'success' : false,
+                'message' : 'Invalid otp!'
+            });
+        }
+    } else {
+        response.json({
+            'success' : false,
+            'message' : `Required field 'otp' is missing`
+        });
+    }
 }
 
 /**
