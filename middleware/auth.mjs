@@ -1,7 +1,7 @@
-const {verifyToken} = require('../service/Authentication');
-const Di = require('../service/Di');
+import { verifyToken  } from "../service/Authentication.mjs";
+import { Di } from '../service/Di.mjs'
 
-async function validateLoginData(request, response, next) {
+export async function validateLoginData(request, response, next) {
     if (!request.body.email ||!request.body.password) {
         response.json({
             success : false,
@@ -12,7 +12,7 @@ async function validateLoginData(request, response, next) {
     }
 }
 
-async function verifyUser(request, response, next)
+export async function verifyUser(request, response, next)
 {
     let headerData = request.headers;
     if (headerData.authorization) {
@@ -41,9 +41,4 @@ async function verifyUser(request, response, next)
             message : 'Authentication failed!'
         })
     }   
-}
-
-module.exports = {
-    validateLoginData,
-    verifyUser
 }

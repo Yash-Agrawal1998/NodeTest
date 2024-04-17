@@ -1,13 +1,13 @@
-const userColletion = require('../models/user');
-const { setUserData } = require('../service/Authentication');
-const Di = require('../service/Di');
+import { userColletion } from "../models/user.mjs";
+import { setUserData } from "../service/Authentication.mjs";
+import { Di } from "../service/Di.mjs";
 
 /**
  * function to get the userData
  * @param {*} request 
  * @param {*} response 
  */
-async function getUserData(request, response)
+export async function getUserData(request, response)
 {
     let di = new Di();
     let userData = di.getData();
@@ -16,16 +16,16 @@ async function getUserData(request, response)
 
 /**
  * function to save the userData
- * @param {object} request 
+ * @param {objectotpRoute} request 
  * @param {object} response 
  */
-async function saveUserData(request, response) {
+export async function saveUserData(request, response) {
     requestData = request.body;
     let responseData = {};
     try {
         if (requestData.email_id && requestData.password) {
             let encryptedPassword = btoa(requestData.password);
-            result = await userColletion.create(
+            let result = await userColletion.create(
                 {
                     first_name : requestData.first_name,
                     last_name : requestData.last_name,
@@ -50,7 +50,7 @@ async function saveUserData(request, response) {
  * @param {*} request 
  * @param {*} response 
  */
-async function findUserDataById(request, response) {
+export async function findUserDataById(request, response) {
     let id = request.params.id;
     userData = await userColletion.findById(id);
     let responseData = {};
@@ -67,7 +67,7 @@ async function findUserDataById(request, response) {
  * @param {*} request 
  * @param {*} response 
  */
-async function updateUserDataById(request, response) {
+export async function updateUserDataById(request, response) {
     let id = request.params.id;
     requestData = request.body;
     result = await userColletion.findByIdAndUpdate(id, requestData.update_data);
@@ -85,7 +85,7 @@ async function updateUserDataById(request, response) {
  * @param {*} request 
  * @param {*} response 
  */
-async function deleteUserDataById(request, response) {
+export async function deleteUserDataById(request, response) {
     let id = request.params.id;
     result = await userColletion.deleteOne({_id : id});
     console.log(result)
@@ -103,8 +103,8 @@ async function deleteUserDataById(request, response) {
  * @param {*} request 
  * @param {*} response 
  */
-async function loginUser(request, response) {
-    bodyData = request.body;
+export async function loginUser(request, response) {
+    let bodyData = request.body;
     let encryptedPassword = btoa(bodyData.password);
     let userData = await userColletion.findOne(
         {
@@ -128,11 +128,3 @@ async function loginUser(request, response) {
     
 }
 
-module.exports = {
-    getUserData,
-    saveUserData,
-    findUserDataById,
-    updateUserDataById,
-    deleteUserDataById,
-    loginUser
-}

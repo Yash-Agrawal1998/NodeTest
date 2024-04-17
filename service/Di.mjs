@@ -1,5 +1,5 @@
 
-class Di
+export class Di
 {
     static userData = {};
 
@@ -14,5 +14,3 @@ class Di
     }
 }
 
-
-module.exports = Di;

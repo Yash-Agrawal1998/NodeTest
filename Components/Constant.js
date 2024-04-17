@@ -1,0 +1,1 @@
+export const Base_PATH = '/app/src';

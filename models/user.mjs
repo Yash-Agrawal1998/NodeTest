@@ -1,4 +1,7 @@
-const mongoose = require('mongoose');
+// const object = require('./Base.mjs');
+// const mongoose = object.getObject();
+
+import { mongoose } from './Base.mjs';
 
 const userSchema = new mongoose.Schema(
     {
@@ -29,6 +32,4 @@ const userSchema = new mongoose.Schema(
     }
 );
 
-const User = mongoose.model('user_data', userSchema);
-
-module.exports = User;
+export const userColletion = mongoose.model('user_data', userSchema);

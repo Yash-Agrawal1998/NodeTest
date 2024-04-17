@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const mongoConnection = () => {
+export const mongoConnection = () => {
     return mongoose.connect('mongodb://mongo:27017/', {
         dbName:"myDatabase",
         user:"root",
@@ -9,4 +9,4 @@ const mongoConnection = () => {
    
 }
 
-module.exports = mongoConnection;
+// module.exports = mongoConnection;

@@ -16,10 +16,10 @@ const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
 });
 
 // Save private key to file
-fs.writeFileSync('./private_key.pem', privateKey);
+fs.writeFileSync('../../../security/privateKey.pem', privateKey);
 
 // Save public key to file
-fs.writeFileSync('./public_key.pem', publicKey);
+fs.writeFileSync('../../../security/publicKey.pem', publicKey);
 
 console.log('Keys generated successfully.');
 

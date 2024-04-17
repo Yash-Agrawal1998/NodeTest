@@ -1,13 +1,12 @@
-const jwt = require('jsonwebtoken');
-const fileSystem = require('fs');
-const path = require('path');
+import jwt from 'jsonwebtoken';
+import { readFileData } from '../Components/File/FileOperation.mjs'
 
 /**
  * function to set the userData if the credetials are valid
  * @param {*} userData 
  * @returns 
  */
-function setUserData(userData)
+export function setUserData(userData)
 {
     let privateKey = getPrivateKey();
     let jwtToken = jwt.sign(
@@ -32,7 +31,7 @@ function setUserData(userData)
  * @param {*} token 
  * @returns 
  */
-function verifyToken(token)
+export function verifyToken(token)
 {
     let response = {};
     let publicKey = getPublicKey();
@@ -55,12 +54,11 @@ function verifyToken(token)
  * function to get the public key
  * @returns 
  */
-function getPublicKey()
+export function getPublicKey()
 {
     let publicKey = '';
-    const publicKeyPath = path.resolve(__dirname, 'security/public_key.pem')
     try {
-        publicKey = fileSystem.readFileSync(publicKeyPath, 'utf-8');
+        publicKey = readFileData('/app/security/publicKey.pem');
     } catch(error) {
         publicKey = error
     }  
@@ -71,19 +69,13 @@ function getPublicKey()
  * function to get the private 
  * @returns 
  */
-function getPrivateKey()
+export function getPrivateKey()
 {
     let privateKey = '';
-    const privateKeyPath = path.resolve(__dirname, 'security/private_key.pem')
     try {
-        privateKey = fileSystem.readFileSync(privateKeyPath, 'utf-8');
+        privateKey = readFileData('/app/security/privateKey.pem');
     } catch(error) {
         privateKey = error
     }  
     return privateKey;
-}
-
-module.exports = {
-    setUserData,
-    verifyToken
 }
