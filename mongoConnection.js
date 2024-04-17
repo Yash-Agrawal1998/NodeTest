@@ -1,12 +1,7 @@
 import mongoose from 'mongoose';
+import { mongoConnectionCredetials, mongoConnectionUrl } from '../config/config.mjs';
 
 export const mongoConnection = () => {
-    return mongoose.connect('mongodb://mongo:27017/', {
-        dbName:"myDatabase",
-        user:"root",
-        pass:"yash-test"
-    })
+    return mongoose.connect(mongoConnectionUrl, mongoConnectionCredetials)
    
 }
-
-// module.exports = mongoConnection;
