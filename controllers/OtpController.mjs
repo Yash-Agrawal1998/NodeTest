@@ -15,7 +15,7 @@ export async function sendOtp(request, response)
             let otp = generateOtp();
             let email = requestData.email;
             let name = requestData.first_name;
-            otpCollection.create({
+            await otpCollection.create({
                 email_id : email,
                 otp : otp
             });
@@ -40,7 +40,8 @@ export async function sendOtp(request, response)
         } catch (error) {
             response.json({
                 'success' : false,
-                'message' : error.message,
+                'message' : 'otp already send  on the registered email!',
+                'error' : error
             });
         }
     } else {
