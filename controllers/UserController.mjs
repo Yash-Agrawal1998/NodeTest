@@ -1,6 +1,8 @@
 import { userColletion } from "../models/user.mjs";
 import { setUserData } from "../service/Authentication.mjs";
 import { Di } from "../service/Di.mjs";
+import { sendemail } from "../Components/Email/Email.mjs";
+import { getCurrentYear, getCurrentDate, getCurrentMonth } from '../Components/Date/Date.mjs';
 
 /**
  * function to get the userData
@@ -128,3 +130,80 @@ export async function loginUser(request, response) {
     
 }
 
+/**
+ * function to update the user password
+ * @param {*} request 
+ * @param {*} response 
+ */
+export async function updatePassword(request, response)
+{
+    let bodyData = request.body;
+    try 
+    {
+        if (bodyData.email) {
+            let email = bodyData.email;
+            let updatedPassword = generatePassword(8);
+            let encryptedPassword = btoa(updatedPassword);
+            let dbResponse = await userColletion.findOneAndUpdate(
+                {
+                    'email_id' : email, 
+                },
+                {
+                    'password' : encryptedPassword
+                }
+            );
+            if (dbResponse) {
+                sendemail(
+                    {
+                        subject : 'Password Updation Done Successfully',
+                        user_email : email,
+                        template_path : '/app/src/views/PasswordRegenerate.hbs',
+                        extraData : {
+                            name : dbResponse.name,
+                            password : updatedPassword,
+                            currentDate : `${getCurrentDate()} ${getCurrentMonth()}, ${getCurrentYear()}`,
+                            currentYear : getCurrentYear()
+                        }
+                    }
+                );
+                response.json({
+                    'success' : true,
+                    'message' : `Password updation mail send successfull!`
+                });
+            } else {
+                response.json({
+                    'success' : false,
+                    'message' : `Email not registered`
+                });
+            }
+        } else {
+            response.json({
+                'success' : false,
+                'message' : `Required field 'email' is missing!`
+            });
+        }
+    } catch (error) {
+        response.json({
+            'success' : false,
+            'message' : error
+        });
+    }
+
+}
+
+/**
+ * function to generate the password
+ * @param {*} length 
+ * @returns 
+ */
+function generatePassword(length)
+{
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@!#$%'; 
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      result += characters.charAt(randomIndex);
+    }
+  
+    return result;
+}

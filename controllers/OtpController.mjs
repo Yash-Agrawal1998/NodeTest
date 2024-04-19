@@ -1,7 +1,6 @@
 import { otpCollection } from '../models/otp.mjs';
 import { sendemail } from '../Components/Email/Email.mjs';
 import { getCurrentYear, getCurrentDate, getCurrentMonth } from '../Components/Date/Date.mjs';
-import path from 'path';
 
 /**
  * function to send the otp email
@@ -20,12 +19,11 @@ export async function sendOtp(request, response)
                 email_id : email,
                 otp : otp
             });
-            let emailFilePath = path.resolve('/app/src/views/Email.hbs');
             sendemail(
                 {
                     subject : 'OTP email',
                     user_email : email,
-                    template_path : emailFilePath,
+                    template_path : '/app/src/views/Otp.hbs',
                     extraData : {
                         name : name,
                         otp : otp,
