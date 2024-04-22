@@ -1,24 +1,25 @@
 import express from 'express';
 import cors from 'cors';
-import { mongoConnection } from './mongoConnection.js';
 import { otpRoute } from './routes/otp.mjs';
 import { userRoute } from './routes/user.mjs';
+import { mongoConnection } from './database/connection.mjs';
+import dotenv from 'dotenv';
 
 const app = express();
-const PORT = 8000;
+
+dotenv.config({
+    path : '/app/envs/env'
+})
 
 app.use(cors());
 app.use(express.json({extended : false}));
-
-mongoConnection().then(() => console.log("MongoDb connected"))
-.catch(error => console.log('Mongo db error', error));
+mongoConnection();
 
 app.use('/users', userRoute);
-// app.use('/url', urlRoute);
 app.use('/otp', otpRoute);
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+app.listen(process.env.PORT, () => {
+    console.log(`Server is running on port ${process.env.PORT}`);
 });
 
 

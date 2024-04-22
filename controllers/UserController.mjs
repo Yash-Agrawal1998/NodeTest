@@ -22,7 +22,7 @@ export async function getUserData(request, response)
  * @param {object} response 
  */
 export async function saveUserData(request, response) {
-    requestData = request.body;
+    let requestData = request.body;
     let responseData = {};
     try {
         if (requestData.email_id && requestData.password) {
@@ -41,7 +41,7 @@ export async function saveUserData(request, response) {
             responseData = {success : false, message : "Required data email_id or password is missing!"}
         }
     } catch(error) {
-        responseData = {success : false, message : error}
+        responseData = {success : false, message : 'Email already registered!', error : error}
     }
     
     response.json(responseData);
@@ -185,7 +185,8 @@ export async function updatePassword(request, response)
     } catch (error) {
         response.json({
             'success' : false,
-            'message' : error
+            'error' : error,
+            'message' : 'Something went wrong!'
         });
     }
 
